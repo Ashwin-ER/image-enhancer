@@ -48,7 +48,7 @@ const Index = () => {
             </div>
           </div>
           <h1 className="text-5xl font-bold mb-4 text-gray-900 animate-slideUp bg-clip-text text-transparent bg-gradient-to-r from-indigo-800 to-purple-800">
-            Lightwave Enhancer
+            Image Enhancer
           </h1>
           <p className="text-gray-600 max-w-lg mx-auto text-lg animate-slideUp" style={{ animationDelay: '100ms' }}>
             Transform dark and low-light images into stunning, vibrant photos with our
@@ -73,7 +73,7 @@ const Index = () => {
               
               {/* Features section */}
               <div className="mt-24 animate-slideUp" style={{ animationDelay: '300ms' }}>
-                <h2 className="text-2xl font-semibold text-center mb-10 text-gray-800">Why Choose Lightwave Enhancer?</h2>
+                <h2 className="text-2xl font-semibold text-center mb-10 text-gray-800">Why Choose Image Enhancer?</h2>
                 
                 <div className="grid md:grid-cols-3 gap-8">
                   <div className="bg-white rounded-xl p-6 shadow-soft">
@@ -148,7 +148,7 @@ const Index = () => {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-center md:text-left text-sm text-gray-500">
-              © {new Date().getFullYear()} Lightwave Enhancer. Transforming low-light images with AI.
+              © {new Date().getFullYear()} Image Enhancer. Transforming low-light images with AI.
             </p>
             <div className="flex gap-4 mt-4 md:mt-0">
               <a href="#privacy" className="text-sm text-gray-500 hover:text-gray-700">Privacy</a>

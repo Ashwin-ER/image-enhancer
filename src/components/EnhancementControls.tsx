@@ -20,8 +20,8 @@ const EnhancementControls: React.FC<EnhancementControlsProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Enhanced Image by Lightwave',
-          text: 'Check out this enhanced image from Lightwave Enhancer!',
+          title: 'Enhanced Image by Image Enhancer',
+          text: 'Check out this enhanced image from Image Enhancer!',
           url: window.location.href,
         });
       } catch (error) {
