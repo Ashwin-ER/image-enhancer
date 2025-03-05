@@ -1,7 +1,6 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { enhanceImage, downloadImage } from '../utils/imageProcessing';
-import { useToast } from './use-toast';
 
 interface UseImageEnhancementReturn {
   originalImage: string | null;
@@ -21,7 +20,6 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [processingProgress, setProcessingProgress] = useState(0);
-  const { toast } = useToast();
 
   // Function to validate image
   const validateImage = (file: File): boolean => {
@@ -56,10 +54,6 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
       }
       
       setIsProcessing(true);
-      toast({
-        title: "Processing started",
-        description: "We're enhancing your image with AI...",
-      });
       
       // Read the file and create a data URL
       const reader = new FileReader();
@@ -79,25 +73,14 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
           
           // Enhance the image
           try {
-            console.log("Starting image enhancement...");
             const enhanced = await enhanceImage(dataUrl);
             clearInterval(progressInterval);
             setProcessingProgress(100);
             setEnhancedImage(enhanced);
-            
-            toast({
-              title: "Enhancement complete",
-              description: "Your image has been successfully enhanced!",
-            });
           } catch (err) {
             clearInterval(progressInterval);
-            console.error("Enhancement error:", err);
             setError('Error enhancing image. Please try another image.');
-            toast({
-              title: "Enhancement failed",
-              description: "There was an error processing your image. Please try another one.",
-              variant: "destructive",
-            });
+            console.error(err);
           } finally {
             setIsProcessing(false);
           }
@@ -107,11 +90,6 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
       reader.onerror = () => {
         setError('Error reading the image file. Please try again.');
         setIsProcessing(false);
-        toast({
-          title: "Upload failed",
-          description: "There was an error reading your image file.",
-          variant: "destructive",
-        });
       };
       
       reader.readAsDataURL(file);
@@ -119,25 +97,16 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
       setError('An unexpected error occurred. Please try again.');
       setIsProcessing(false);
       console.error(err);
-      toast({
-        title: "Unexpected error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
-      });
     }
-  }, [toast]);
+  }, []);
 
   // Function to download the enhanced image
   const downloadEnhancedImage = useCallback(() => {
     if (enhancedImage) {
       const filename = 'enhanced-image.jpg';
       downloadImage(enhancedImage, filename);
-      toast({
-        title: "Download started",
-        description: "Your enhanced image is being downloaded.",
-      });
     }
-  }, [enhancedImage, toast]);
+  }, [enhancedImage]);
 
   // Function to reset the current images
   const resetImages = useCallback(() => {
