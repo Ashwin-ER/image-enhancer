@@ -1,6 +1,9 @@
 
 DEMO: https://image-enhancer-plum.vercel.app/
 
+![image](https://github.com/user-attachments/assets/ab7e9541-a121-4f44-a2b7-b60f56d291cb)
+
+
 
 **Use your preferred IDE**
 
