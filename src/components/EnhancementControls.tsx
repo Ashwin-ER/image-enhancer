@@ -1,17 +1,23 @@
+
 import React from 'react';
 import { Download, ArrowLeft, RefreshCw, Share2 } from 'lucide-react';
+import { useToast } from '../hooks/use-toast';
+
 interface EnhancementControlsProps {
   isProcessing: boolean;
   hasResult: boolean;
   onDownload: () => void;
   onReset: () => void;
 }
+
 const EnhancementControls: React.FC<EnhancementControlsProps> = ({
   isProcessing,
   hasResult,
   onDownload,
   onReset
 }) => {
+  const { toast } = useToast();
+
   // Simulated share functionality
   const handleShare = async () => {
     if (navigator.share) {
@@ -27,9 +33,13 @@ const EnhancementControls: React.FC<EnhancementControlsProps> = ({
     } else {
       // Fallback - copy URL to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      toast({
+        title: "Link copied",
+        description: "Link copied to clipboard!",
+      });
     }
   };
+
   return <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full animate-fadeIn">
       {hasResult && <>
           <button className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-white text-gray-800 hover:bg-gray-50 hover:shadow-soft-lg transition-all-300 border border-gray-100" onClick={onReset} disabled={isProcessing}>
@@ -42,7 +52,10 @@ const EnhancementControls: React.FC<EnhancementControlsProps> = ({
             <span>Download Enhanced Image</span>
           </button>
           
-          
+          <button className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-white text-gray-800 hover:bg-gray-50 hover:shadow-soft-lg transition-all-300 border border-gray-100" onClick={handleShare} disabled={isProcessing}>
+            <Share2 className="w-4 h-4" />
+            <span>Share</span>
+          </button>
         </>}
 
       {isProcessing && <div className="flex items-center gap-2 px-5 py-3 rounded-lg bg-muted text-muted-foreground">
@@ -51,4 +64,5 @@ const EnhancementControls: React.FC<EnhancementControlsProps> = ({
         </div>}
     </div>;
 };
+
 export default EnhancementControls;
