@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Download, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Download, ArrowLeft, RefreshCw, Share2 } from 'lucide-react';
 
 interface EnhancementControlsProps {
   isProcessing: boolean;
@@ -15,12 +15,31 @@ const EnhancementControls: React.FC<EnhancementControlsProps> = ({
   onDownload,
   onReset,
 }) => {
+  // Simulated share functionality
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Enhanced Image by Lightwave',
+          text: 'Check out this enhanced image from Lightwave Enhancer!',
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.log('Error sharing:', error);
+      }
+    } else {
+      // Fallback - copy URL to clipboard
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied to clipboard!');
+    }
+  };
+
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full animate-fadeIn">
       {hasResult && (
         <>
           <button
-            className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-white text-gray-800 hover:shadow-soft-lg transition-all-300 border border-gray-100"
+            className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-white text-gray-800 hover:bg-gray-50 hover:shadow-soft-lg transition-all-300 border border-gray-100"
             onClick={onReset}
             disabled={isProcessing}
           >
@@ -29,12 +48,21 @@ const EnhancementControls: React.FC<EnhancementControlsProps> = ({
           </button>
 
           <button
-            className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-primary text-primary-foreground hover:bg-primary/90 transition-all-300"
+            className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-indigo-600 text-white hover:bg-indigo-700 transition-all-300"
             onClick={onDownload}
             disabled={isProcessing}
           >
             <Download className="w-4 h-4" />
             <span>Download Enhanced Image</span>
+          </button>
+          
+          <button
+            className="flex items-center gap-2 px-5 py-3 rounded-lg shadow-soft bg-white text-gray-800 hover:bg-gray-50 hover:shadow-soft-lg transition-all-300 border border-gray-100"
+            onClick={handleShare}
+            disabled={isProcessing}
+          >
+            <Share2 className="w-4 h-4" />
+            <span>Share</span>
           </button>
         </>
       )}

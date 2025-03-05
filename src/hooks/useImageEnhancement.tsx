@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { enhanceImage, downloadImage } from '../utils/imageProcessing';
 
 interface UseImageEnhancementReturn {
@@ -7,6 +7,7 @@ interface UseImageEnhancementReturn {
   enhancedImage: string | null;
   isProcessing: boolean;
   error: string | null;
+  processingProgress: number;
   processImage: (file: File) => void;
   downloadEnhancedImage: () => void;
   resetImages: () => void;
@@ -18,11 +19,40 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
   const [enhancedImage, setEnhancedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [processingProgress, setProcessingProgress] = useState(0);
+
+  // Function to validate image
+  const validateImage = (file: File): boolean => {
+    // Check file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+    if (!validTypes.includes(file.type)) {
+      setError(`Unsupported file type: ${file.type}. Please use JPG, PNG, WebP, or HEIC.`);
+      return false;
+    }
+    
+    // Check file size (max 15MB)
+    const maxSize = 15 * 1024 * 1024; // 15MB in bytes
+    if (file.size > maxSize) {
+      setError('Image size is too large. Please use an image under 15MB.');
+      return false;
+    }
+    
+    return true;
+  };
 
   // Function to process an uploaded image
   const processImage = useCallback(async (file: File) => {
     try {
+      // Reset any previous errors and states
       setError(null);
+      setEnhancedImage(null);
+      setProcessingProgress(0);
+      
+      // Validate the image file
+      if (!validateImage(file)) {
+        return;
+      }
+      
       setIsProcessing(true);
       
       // Read the file and create a data URL
@@ -33,14 +63,22 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
           const dataUrl = e.target.result as string;
           setOriginalImage(dataUrl);
           
-          // Simulate a delay to make the processing seem more realistic
-          await new Promise(resolve => setTimeout(resolve, 1500));
+          // Simulate progress updates
+          const progressInterval = setInterval(() => {
+            setProcessingProgress(prev => {
+              const newProgress = prev + Math.random() * 5;
+              return newProgress >= 90 ? 90 : newProgress;
+            });
+          }, 200);
           
           // Enhance the image
           try {
             const enhanced = await enhanceImage(dataUrl);
+            clearInterval(progressInterval);
+            setProcessingProgress(100);
             setEnhancedImage(enhanced);
           } catch (err) {
+            clearInterval(progressInterval);
             setError('Error enhancing image. Please try another image.');
             console.error(err);
           } finally {
@@ -75,6 +113,7 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
     setOriginalImage(null);
     setEnhancedImage(null);
     setError(null);
+    setProcessingProgress(0);
   }, []);
 
   // Determine if we have a result to show
@@ -85,6 +124,7 @@ export const useImageEnhancement = (): UseImageEnhancementReturn => {
     enhancedImage,
     isProcessing,
     error,
+    processingProgress,
     processImage,
     downloadEnhancedImage,
     resetImages,

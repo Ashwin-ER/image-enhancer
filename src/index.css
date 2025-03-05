@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
     
-    --primary: 240 5.9% 10%;
+    --primary: 246 60% 50%;
     --primary-foreground: 0 0% 98%;
     
     --secondary: 240 4.8% 95.9%;
@@ -23,15 +23,15 @@
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 246 60% 96%;
+    --accent-foreground: 246 60% 50%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 240 10% 3.9%;
+    --ring: 246 60% 50%;
     
     --radius: 0.5rem;
 
@@ -45,10 +45,10 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Custom colors for our app */
-    --highlight: 210 100% 50%;
+    --highlight: 246 60% 50%;
     --highlight-foreground: 0 0% 100%;
     --success: 142 71% 45%;
-    --subtle-bg: 210 50% 98%;
+    --subtle-bg: 246 60% 98%;
   }
 }
 
@@ -63,11 +63,13 @@
   }
 }
 
-/* Custom animations */
+/* Enhanced animations */
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(-15px) translateX(0px); }
+  75% { transform: translateY(-7px) translateX(-5px); }
+  100% { transform: translateY(0px) translateX(0px); }
 }
 
 @keyframes fadeIn {
@@ -76,7 +78,7 @@
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
+  from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
@@ -91,8 +93,18 @@
   100% { background-position: 200% 0; }
 }
 
+@keyframes scaleIn {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes rotateIn {
+  0% { transform: rotate(-5deg) scale(0.95); opacity: 0; }
+  100% { transform: rotate(0) scale(1); opacity: 1; }
+}
+
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 12s ease-in-out infinite;
 }
 
 .animate-fadeIn {
@@ -100,11 +112,19 @@
 }
 
 .animate-slideUp {
-  animation: slideUp 0.5s ease-out forwards;
+  animation: slideUp 0.7s ease-out forwards;
 }
 
 .animate-pulse-subtle {
   animation: pulse 2s infinite;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.animate-rotateIn {
+  animation: rotateIn 0.5s ease-out forwards;
 }
 
 .loading-shimmer {
@@ -116,11 +136,12 @@
   animation: shimmer 1.5s infinite;
 }
 
-/* Glass effect utilities */
+/* Enhanced glass effect utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .glass-dark {
@@ -146,12 +167,13 @@
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Image comparison slider */
+/* Enhanced image comparison slider */
 .image-comparison-slider {
   position: relative;
   overflow: hidden;
   width: 100%;
   border-radius: 12px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
 }
 
 .image-comparison-slider .slider-handle {
@@ -194,4 +216,57 @@
   background: white;
   border-radius: 50%;
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom button hover effects */
+.btn-hover-slide {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-hover-slide::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: height 0.3s ease;
+  z-index: -1;
+}
+
+.btn-hover-slide:hover::after {
+  height: 100%;
+}
+
+/* Reveal animation for elements as they come into view */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Shadow utilities */
+.shadow-soft {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-soft-lg {
+  box-shadow: 0 10px 30px -3px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-soft-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.shadow-soft-hover:hover {
+  box-shadow: 0 10px 30px -3px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
